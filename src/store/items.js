@@ -11,10 +11,14 @@ export default {
       (state) =>
       ({ x, y }) =>
         state.items.filter((item) => item.x === x && item.y === y),
+    getLastItem: (state) => state.items[state.items.length - 1],
   },
   mutations: {
     addItem(state, action) {
       state.items.push(action);
+    },
+    removeItem(state, action) {
+      state.items = state.items.filter((el) => el.id !== action.id);
     },
     setItemByXY(state, { itemId, cellX, cellY }) {
       state.items = state.items.map((item) =>

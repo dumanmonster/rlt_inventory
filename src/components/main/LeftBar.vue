@@ -26,10 +26,12 @@ export default {
         for (let x = 0; x < 5; x++) {
           if (!this.$store.getters.getItemByXY({ x, y }).length) {
             this.$store.commit("addItem", {
+              id: this.$store.getters.getAllItems.length
+                ? this.$store.getters.getLastItem.id + 1
+                : 1,
               ...this.newItem,
               x,
               y,
-              id: Date.now(),
             });
             break yCord;
           }
