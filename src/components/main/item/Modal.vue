@@ -1,14 +1,19 @@
 <script>
 import Button from "@/components/UI/Button";
+import { useStore } from "vuex";
 export default {
   props: ["item", "closeModal"],
   components: { Button },
-  methods: {
-    delete() {
-      this.$store.commit("removeItem", {
-        id: this.item.id,
+  setup(props) {
+    const store = useStore();
+
+    function deleteItem() {
+      store.commit("removeItem", {
+        id: props.item.id,
       });
-    },
+    }
+
+    return { deleteItem };
   },
 };
 </script>
@@ -41,7 +46,7 @@ export default {
       </div>
       <div class="item-modal__footer">
         <div class="item-modal__divider item-modal__divider_second"></div>
-        <Button :secondary="true" :onClick="delete">Удалить предмет</Button>
+        <Button :secondary="true" :onClick="deleteItem">Удалить предмет</Button>
       </div>
     </div>
   </div>

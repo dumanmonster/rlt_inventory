@@ -1,35 +1,34 @@
 <script>
 import Input from "../UI/Input.vue";
 import Button from "../UI/Button.vue";
-
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
 export default {
-  data: () => ({
-    newItem: {
-      name: "",
-      amount: 1,
-      color: "#656CAA",
-    },
-  }),
   components: {
     Input,
     Button,
   },
-  computed: {
-    allItems() {
-      return this.$store.getters["getAllItems"];
-    },
-  },
-  methods: {
-    createItem() {
-      if (!this.newItem.name) return alert("Введите название предмета");
+  setup(props) {
+    const store = useStore();
+    const newItem = ref({
+      name: "",
+      amount: 1,
+      color: "#656CAA",
+    });
+    const allItems = () =>
+      computed(() => {
+        return store.getters["getAllItems"];
+      });
+    function createItem() {
+      if (!newItem.value.name) return alert("Введите название предмета");
       yCord: for (let y = 0; y < 5; y++) {
         for (let x = 0; x < 5; x++) {
-          if (!this.$store.getters.getItemByXY({ x, y }).length) {
-            this.$store.commit("addItem", {
-              id: this.$store.getters.getAllItems.length
-                ? this.$store.getters.getLastItem.id + 1
+          if (!store.getters.getItemByXY({ x, y }).length) {
+            store.commit("addItem", {
+              id: store.getters.getAllItems.length
+                ? store.getters.getLastItem.id + 1
                 : 1,
-              ...this.newItem,
+              ...newItem.value,
               x,
               y,
             });
@@ -37,7 +36,12 @@ export default {
           }
         }
       }
-    },
+    }
+    return {
+      newItem,
+      allItems,
+      createItem,
+    };
   },
 };
 </script>

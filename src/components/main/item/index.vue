@@ -1,26 +1,26 @@
 <script>
 import Modal from "./Modal.vue";
+import { ref } from "vue";
 export default {
   props: ["item"],
-  data: () => ({
-    isModalOpen: false,
-  }),
   components: {
     Modal,
   },
-  methods: {
-    dragStart(e) {
+  setup(props, context) {
+    let isModalOpen = ref(false);
+    function dragStart(e) {
       e.dataTransfer.dropEffect = "move";
       e.dataTransfer.effectAllowed = "move";
+      e.dataTransfer.setData("item_id", props.item.id);
+    }
+    function openModal() {
+      isModalOpen.value = true;
+    }
+    function closeModal() {
+      isModalOpen.value = false;
+    }
 
-      e.dataTransfer.setData("item_id", this.item.id);
-    },
-    openModal() {
-      this.isModalOpen = true;
-    },
-    closeModal() {
-      this.isModalOpen = false;
-    },
+    return { isModalOpen, openModal, closeModal, dragStart };
   },
 };
 </script>
